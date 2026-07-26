@@ -1,28 +1,38 @@
 fn main() {
-    let fireball = ("Fireball", 30, 45);
-    let frostbolt = ("Frostbolt", 25, 35);
-    let arcane_blast = ("Arcane Blast", 40, 60);
+    let name = "Tiberius";
+    let level = 7;
+    let mana = 100;
+    let current_exp = 5;
 
-    let (f_name, f_cost, f_dmg) = fireball;
-    println!("Spell: {f_name} | Mana:{f_cost} | Damage: {f_dmg}");
+    greet_mage(name, level);
 
-    let costs = [f_cost, 25, 40];
-    let cheapest = costs[0];
+    let max_mana = calculate_max_mana(level);
+    println!("Max mana: {max_mana}");
 
-    println!("First spell costs: {cheapest}");
+    let can_cast = can_cast_spell(mana, 30);
+    println!("Can cast Fireball (30 mana): {can_cast}");
 
-    let character = ("tiberius", 7, 100.0, true);
-    let (c_name, c_level, c_hp, c_alive) = character;
-    println!("\nCharacter: {c_name} (level {c_level})");
-    println!("HP: {c_hp} | Alive: {c_alive}");
+    let mana_after = cast_spell(mana, 30);
+    println!("Mana after casting: {mana_after}");
 
-    let favorate_potion = ("immortality", "healing", 70, 60);
-    let (p_name, p_effect, p_potency, p_duration) = favorate_potion;
-    println!(
-        "Favorite potion: {p_name} ({p_effect}) | Potency: {p_potency} | Duration: {p_duration}"
-    );
+    let can_level = can_level_up(current_exp, 50);
+    println!("can {name} level up? {can_level}")
+}
+fn greet_mage(name: &str, level: u32) {
+    println!("Welcome, {name}! You are level {level}.");
+}
 
-    let spells_per_level: [u32; 10] = [3, 3, 5, 7, 10, 14, 19, 25, 32, 40];
-    let spells_at_7 = spells_per_level[6];
-    println!("At level 7, you know {spells_at_7} spells");
+fn calculate_max_mana(level: u32) -> u32 {
+    50 + (25 * level)
+}
+fn can_cast_spell(current_mana: u32, cost: u32) -> bool {
+    current_mana >= cost
+}
+
+fn cast_spell(current_mana: u32, cost: u32) -> u32 {
+    current_mana - cost
+}
+
+fn can_level_up(exp: u32, required_exp: u32) -> bool {
+    exp >= required_exp
 }
