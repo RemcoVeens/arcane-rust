@@ -1,38 +1,49 @@
 fn main() {
-    let name = "Tiberius";
-    let level = 7;
     let mana = 100;
-    let current_exp = 5;
+    let health = 75;
+    let has_treasure = false;
+    let level = 7;
+    let found_staff = true;
+    let has_key = true;
 
-    greet_mage(name, level);
+    println!("=== Status Check ===");
+    if health > 0 {
+        println!("You are alive.")
+    } else {
+        println!("Your have fallen...")
+    }
 
-    let max_mana = calculate_max_mana(level);
-    println!("Max mana: {max_mana}");
+    let mana_status = if mana >= 80 {
+        "brimming with power"
+    } else if mana >= 30 {
+        "adequately charged"
+    } else {
+        "dangerously low"
+    };
+    println!("Mana levels: {mana_status}");
 
-    let can_cast = can_cast_spell(mana, 30);
-    println!("Can cast Fireball (30 mana): {can_cast}");
+    if health < 30 && !has_treasure {
+        println!("You should retreat and heal.")
+    } else if health < 50 && has_treasure {
+        println!("You have treasure! Push forward carefully.")
+    } else {
+        println!("You are in good shape. Continue exploring")
+    }
+    if has_key {
+        println!("You unlock the ancient door.")
+    } else {
+        println!("The door is sealed. Find the key.")
+    }
+    let equipable = can_equip(6, level);
+    println!("Can equip: {equipable}");
 
-    let mana_after = cast_spell(mana, 30);
-    println!("Mana after casting: {mana_after}");
-
-    let can_level = can_level_up(current_exp, 50);
-    println!("can {name} level up? {can_level}")
+    let weapon = if found_staff {
+        "Staff of Fire"
+    } else {
+        "Woden Stick"
+    };
+    println!("Equipped weapon: {weapon}");
 }
-fn greet_mage(name: &str, level: u32) {
-    println!("Welcome, {name}! You are level {level}.");
-}
-
-fn calculate_max_mana(level: u32) -> u32 {
-    50 + (25 * level)
-}
-fn can_cast_spell(current_mana: u32, cost: u32) -> bool {
-    current_mana >= cost
-}
-
-fn cast_spell(current_mana: u32, cost: u32) -> u32 {
-    current_mana - cost
-}
-
-fn can_level_up(exp: u32, required_exp: u32) -> bool {
-    exp >= required_exp
+fn can_equip(item_level: u32, player_level: u32) -> bool {
+    player_level >= item_level
 }
