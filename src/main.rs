@@ -1,49 +1,49 @@
 fn main() {
-    let mana = 100;
-    let health = 75;
-    let has_treasure = false;
-    let level = 7;
-    let found_staff = true;
-    let has_key = true;
+    let mut mana = 0;
+    while mana < 100 {
+        println!("Meditating... {mana} mana");
+        mana += 25;
+    }
+    println!("Fully restored!\n");
 
-    println!("=== Status Check ===");
-    if health > 0 {
-        println!("You are alive.")
-    } else {
-        println!("Your have fallen...")
+    for level in 1..=5 {
+        let spells_unlocked = level * 2;
+        println!("Level {level}: {spells_unlocked} spells available");
+    }
+    println!();
+
+    let spellbook = ["Fireball", "Frostbolt", "Arcane Blast", "Heal", "Shield"];
+    println!("=== Spellbool ===");
+    for spell in spellbook {
+        println!("  - {spell}");
+    }
+    println!();
+
+    for n in (1..=10).rev() {
+        println!("{n} ");
+    }
+    println!("Liftoff!");
+
+    println!();
+    for i in 1..=5 {
+        for j in 1..=5 {
+            let sum = i * j;
+            if sum < 10 {
+                print!("  {sum}");
+            } else {
+                print!(" {sum}");
+            }
+        }
+        println!()
     }
 
-    let mana_status = if mana >= 80 {
-        "brimming with power"
-    } else if mana >= 30 {
-        "adequately charged"
-    } else {
-        "dangerously low"
-    };
-    println!("Mana levels: {mana_status}");
-
-    if health < 30 && !has_treasure {
-        println!("You should retreat and heal.")
-    } else if health < 50 && has_treasure {
-        println!("You have treasure! Push forward carefully.")
-    } else {
-        println!("You are in good shape. Continue exploring")
+    println!();
+    let mut i = 1;
+    loop {
+        if i % 7 == 0 && i % 13 == 0 {
+            break;
+        }
+        i += 1;
     }
-    if has_key {
-        println!("You unlock the ancient door.")
-    } else {
-        println!("The door is sealed. Find the key.")
-    }
-    let equipable = can_equip(6, level);
-    println!("Can equip: {equipable}");
-
-    let weapon = if found_staff {
-        "Staff of Fire"
-    } else {
-        "Woden Stick"
-    };
-    println!("Equipped weapon: {weapon}");
-}
-fn can_equip(item_level: u32, player_level: u32) -> bool {
-    player_level >= item_level
+    println!("{i} is the first number divisible by both 7 and 13");
 }
