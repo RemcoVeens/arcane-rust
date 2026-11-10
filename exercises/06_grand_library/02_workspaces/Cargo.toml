@@ -1,0 +1,10 @@
+[package]
+name = "ch06_02_workspaces"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+# A path dependency that lives inside the workspace directory:
+# Cargo makes it a workspace member automatically.
+arcana_core = { path = "arcana_core" }

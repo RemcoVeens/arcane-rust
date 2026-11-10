@@ -1,0 +1,7 @@
+[package]
+name = "ch02_05_borrowing_rules"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]

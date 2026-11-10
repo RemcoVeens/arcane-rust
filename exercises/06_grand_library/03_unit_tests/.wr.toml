@@ -1,0 +1,31 @@
+# This quest is verified differently: you write the tests, and `wr` checks
+# that (1) they pass, (2) there are at least 5 of them, and (3) each of the
+# Inquisitor's saboteurs is caught by at least one failing test.
+
+[[verification]]
+command = "cargo"
+args = ["test", "-q"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "n=$(cargo test -q --lib -- --list 2>/dev/null | grep -c ': test$'); if [ \"$n\" -lt 5 ]; then echo \"📜 Only $n unit tests found in src/lib.rs — write at least 5.\" >&2; exit 1; fi"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "if cargo test -q --features sabotage_damage >/dev/null 2>&1; then echo '🕵️ Saboteur sabotage_damage escaped: no test caught the broken spell_damage' >&2; exit 1; fi"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "if cargo test -q --features sabotage_mana >/dev/null 2>&1; then echo '🕵️ Saboteur sabotage_mana escaped: no test caught the broken try_cast' >&2; exit 1; fi"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "if cargo test -q --features sabotage_crit >/dev/null 2>&1; then echo '🕵️ Saboteur sabotage_crit escaped: no test caught the broken (private!) crit_multiplier' >&2; exit 1; fi"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "if cargo test -q --features sabotage_ranking >/dev/null 2>&1; then echo '🕵️ Saboteur sabotage_ranking escaped: no test caught the broken rank_by_power' >&2; exit 1; fi"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "if cargo test -q --features sabotage_summon >/dev/null 2>&1; then echo '🕵️ Saboteur sabotage_summon escaped: no test checks that summon(0) panics' >&2; exit 1; fi"]

@@ -1,0 +1,8 @@
+[package]
+name = "ch07_04_async_basics"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+tokio = { workspace = true }

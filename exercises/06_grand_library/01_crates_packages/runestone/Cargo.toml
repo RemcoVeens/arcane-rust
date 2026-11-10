@@ -1,0 +1,9 @@
+# 🪨 A small, finished library crate. You do not need to change it —
+# your job is to *depend* on it from ../Cargo.toml.
+[package]
+name = "runestone"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]

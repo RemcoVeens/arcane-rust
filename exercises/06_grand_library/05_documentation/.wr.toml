@@ -1,0 +1,19 @@
+# Documentation is code here: every public item needs docs, every example
+# must compile and pass, there must be at least 3 doc tests, and
+# `cargo doc` must build without a single warning (e.g. broken links).
+
+[[verification]]
+command = "cargo"
+args = ["test", "-q"]
+
+[[verification]]
+command = "cargo"
+args = ["test", "-q", "--doc"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "n=$(cargo test -q --doc -- --list 2>/dev/null | grep -c ': test$'); if [ \"$n\" -lt 3 ]; then echo \"📜 Only $n doc tests — the Archivist wants at least 3 examples.\" >&2; exit 1; fi"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "RUSTDOCFLAGS='-D warnings' cargo doc --no-deps -q"]

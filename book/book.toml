@@ -1,0 +1,16 @@
+[book]
+title = "Arcane Rust — The Terminal Grimoire"
+authors = ["The Ancient Scribe"]
+language = "en"
+src = "src"
+
+[output.html]
+default-theme = "coal"
+preferred-dark-theme = "coal"
+additional-css = ["theme/arcane.css"]
+git-repository-url = ""
+no-section-label = true
+
+[output.html.fold]
+enable = true
+level = 1

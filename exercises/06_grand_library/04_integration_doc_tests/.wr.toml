@@ -1,0 +1,14 @@
+# Verified in three steps: everything passes, tests/arena.rs holds at least
+# 5 integration tests, and src/lib.rs carries at least 2 doc tests.
+
+[[verification]]
+command = "cargo"
+args = ["test", "-q"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "n=$(cargo test -q --test arena -- --list 2>/dev/null | grep -c ': test$'); if [ \"$n\" -lt 5 ]; then echo \"⚔️ Only $n integration tests in tests/arena.rs — write at least 5.\" >&2; exit 1; fi"]
+
+[[verification]]
+command = "sh"
+args = ["-c", "n=$(cargo test -q --doc -- --list 2>/dev/null | grep -c ': test$'); if [ \"$n\" -lt 2 ]; then echo \"📜 Only $n doc tests in src/lib.rs — add at least 2 /// examples.\" >&2; exit 1; fi"]

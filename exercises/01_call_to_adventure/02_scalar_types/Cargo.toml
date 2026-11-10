@@ -1,0 +1,7 @@
+[package]
+name = "ch01_02_scalar_types"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
