@@ -7,7 +7,7 @@
 /// A mage starts with 50 mana, rests (+25), then meditates (+25).
 /// Returns the final mana.
 pub fn rest_and_meditate() -> u32 {
-    let mana = 50;
+    let mut mana = 50;
     mana = mana + 25; // rest
     mana += 25; // meditate
     mana
@@ -17,9 +17,7 @@ pub fn rest_and_meditate() -> u32 {
 /// Fix the scoping problem — `staff_power` must be visible where it's used.
 pub fn mage_stats() -> (usize, u32) {
     let name = "Tiberius";
-    {
-        let staff_power = 42;
-    }
+    let staff_power = 42;
     (name.len(), staff_power)
 }
 

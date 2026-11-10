@@ -19,6 +19,7 @@ From the root of the repository:
 ```bash
 just book     # open this book in your browser (mdbook serve --open)
 just quest    # = wr : check your current quest, open the next one when it passes
+just edit     # open the current quest (lib.rs + this page) in Zed
 just watch    # re-run `wr` every time you save a file
 just rank     # see your XP and mage rank
 ```

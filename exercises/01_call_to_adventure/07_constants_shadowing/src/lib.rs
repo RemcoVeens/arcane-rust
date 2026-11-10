@@ -4,11 +4,11 @@
 // ❌ This file does not compile yet: constants are picky.
 
 /// The maximum mana any mage can hold.
-pub const MAX_MANA = 100;
+pub const MAX_MANA: u32 = 100;
 
 /// Fill a mana pool, but never beyond MAX_MANA.
 pub fn fill(mana: u32, amount: u32) -> u32 {
-    todo!()
+    mana.saturating_add(amount).min(MAX_MANA)
 }
 
 /// A mage types their mana into the terminal, e.g. "  42\n".
@@ -18,13 +18,13 @@ pub fn fill(mana: u32, amount: u32) -> u32 {
 /// If the text is not a number, return 0.
 /// Hint: `.parse()` returns a Result; `.unwrap_or(0)` gives a default.
 pub fn parse_mana(input: &str) -> u32 {
-    todo!()
+    input.trim().parse().unwrap_or(0u32)
 }
 
 /// Shadowing can even change the type. Take the spell name, and shadow it
 /// with its length, then return that length doubled.
 pub fn name_power(spell: &str) -> usize {
-    todo!()
+    spell.len() * 2
 }
 
 #[cfg(test)]

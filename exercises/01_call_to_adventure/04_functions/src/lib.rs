@@ -6,26 +6,29 @@
 
 /// Spell damage = base damage + 5 per mage level.
 pub fn spell_damage(base: u32, level: u32) -> u32 {
-    base + level * 5
+    base + (level * 5)
 }
 
 /// Returns the mana left after casting.
 /// The compiler complains: "expected `u32`, found `()`". Why?
 pub fn mana_after_cast(mana: u32, cost: u32) -> u32 {
-    mana - cost;
+    mana.saturating_sub(cost)
 }
 
 // TODO: write a function `describe_spell` that takes a spell name (`&str`)
 // and a cost (`u32`) and returns a `String` like:
 //     "Fireball costs 30 mana"
 // Hint: format!() works like println!() but returns a String.
+pub fn describe_spell(name: &str, cost: u32) -> String {
+    format!("{name} costs {cost} mana")
+}
 
 /// Uses a block expression: the value of a `{ }` block is its last expression.
 /// Return (base * 2) + 1, computed inside a block.
 pub fn empowered(base: u32) -> u32 {
     let result = {
         let doubled = base * 2;
-        todo!()
+        doubled + 1
     };
     result
 }

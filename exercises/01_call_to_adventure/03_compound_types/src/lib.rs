@@ -4,34 +4,34 @@
 /// A spell as a tuple: (name, mana cost, power).
 /// Return the Fireball: name "Fireball", cost 30, power 45.
 pub fn fireball() -> (&'static str, u32, u32) {
-    todo!()
+    ("Fireball", 30, 45)
 }
 
 /// Return only the power (the third element) of a spell tuple.
 pub fn spell_power(spell: (&'static str, u32, u32)) -> u32 {
-    todo!()
+    spell.2
 }
 
 /// Destructure the pair and return it the other way around.
 pub fn swap(pair: (u32, &'static str)) -> (&'static str, u32) {
-    todo!()
+    (pair.1, pair.0)
 }
 
 /// A spell circle always has exactly 5 rune costs.
 /// Return their total. (Loops come later — use indexing for now!)
 pub fn circle_cost(costs: [u32; 5]) -> u32 {
-    todo!()
+    costs[0] + costs[1] + costs[2] + costs[3] + costs[4]
 }
 
 /// Create a spell circle where every rune costs `cost`.
 /// Hint: there's a short syntax for "the same value N times".
 pub fn uniform_circle(cost: u32) -> [u32; 5] {
-    todo!()
+    [cost; 5]
 }
 
 /// The grimoire grid is 3x3. Return the rune in the very center.
 pub fn center_rune(grid: [[char; 3]; 3]) -> char {
-    todo!()
+    grid[1][1]
 }
 
 #[cfg(test)]

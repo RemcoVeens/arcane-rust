@@ -7,25 +7,42 @@
 ///   30..=59  → "major"
 ///   60+      → "legendary"
 pub fn spell_tier(power: u32) -> &'static str {
-    todo!()
+    if power <= 0 {
+        "utility"
+    } else if power <= 29 {
+        "minor"
+    } else if power <= 59 {
+        "major"
+    } else {
+        "legendary"
+    }
 }
 
 /// A mage can cast a spell when they have enough mana AND are high enough level.
 pub fn can_cast(mana: u32, cost: u32, level: u32, required_level: u32) -> bool {
-    todo!()
+    mana >= cost && level >= required_level
 }
 
 /// `if` is an expression! Use `let aura = if ... { ... } else { ... };`
 /// Mana above 50 → "blue", otherwise → "grey".
 /// Return a sentence like: "Your aura glows blue"
 pub fn aura(mana: u32) -> String {
-    todo!()
+    let color = if mana > 50 { "blue" } else { "grey" };
+    format!("Your aura glows {color}")
 }
 
 /// The Rune Gate opens on multiples of 3 ("Fizz"), 5 ("Buzz") or both ("FizzBuzz").
 /// Otherwise the gate whispers the number back.
 pub fn rune_gate(n: u32) -> String {
-    todo!()
+    if n % 3 == 0 && n % 5 == 0 {
+        "FizzBuzz".to_string()
+    } else if n % 3 == 0 {
+        "Fizz".to_string()
+    } else if n % 5 == 0 {
+        "Buzz".to_string()
+    } else {
+        n.to_string()
+    }
 }
 
 #[cfg(test)]

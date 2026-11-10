@@ -10,7 +10,7 @@
 /// Returns the oath of the Arcane Academy.
 pub fn oath() -> &'static str {
     // TODO: return exactly "I seek the Arcane"
-    "I seek... uh... snacks?"
+    "I seek the Arcane"
 }
 
 #[cfg(test)]

@@ -24,26 +24,39 @@ pub const SPELLS: [Spell; 5] = [
 
 /// The banner shown at startup. Must contain "ARCANE GRIMOIRE".
 pub fn banner() -> String {
-    todo!()
+    format!(
+        "╔══════════════════════════════════╗\r\n║      ARCANE GRIMOIRE v0.1        ║\r\n╚══════════════════════════════════╝\r\n"
+    )
 }
 
 /// Find a spell by name, ignoring upper/lower case.
 /// `Option` is a box that holds either `Some(spell)` or `None`.
 /// (Chapter 3 explains it fully — for now: `return Some(spell);` or `None`.)
 pub fn find_spell(name: &str) -> Option<Spell> {
-    todo!()
+    for spell in SPELLS {
+        if name == spell.0 {
+            return Some(spell);
+        }
+    }
+    None
 }
 
 /// One line per spell, numbered from 1:
 ///   "1. Fireball — mana 30, power 45, level 1"
 /// Lines are separated by '\n'.
 pub fn spell_list() -> String {
-    todo!()
+    let mut res = "".to_string();
+    for (i, spell) in SPELLS.iter().enumerate() {
+        let lc = i + 1;
+        let (name, mana, power, level) = spell;
+        res = format!("{res}{lc}. {name} — mana {mana}, power {power}, level {level}\n")
+    }
+    res
 }
 
 /// Drinking a potion restores POTION_STRENGTH mana, capped at MAX_MANA.
 pub fn drink_potion(mana: u32) -> u32 {
-    todo!()
+    (mana + POTION_STRENGTH).min(MAX_MANA)
 }
 
 /// Try to cast a spell. Returns (mana afterwards, message).
@@ -54,7 +67,23 @@ pub fn drink_potion(mana: u32) -> u32 {
 /// - Success:         mana reduced by cost, message contains the spell's
 ///                    proper name and its power, e.g. "You cast Fireball! (45 damage)"
 pub fn cast(name: &str, mana: u32, level: u32) -> (u32, String) {
-    todo!()
+    let spell = find_spell(name);
+    let Some((spell_name, spell_mana, spell_power, spell_level)) = spell else {
+        return (mana, "Unknown spell: {name}".to_string());
+    };
+    if spell_level > level {
+        return (
+            mana,
+            "Requires level {spell_level}, current level {level}".to_string(),
+        );
+    } else if spell_mana > mana {
+        return (mana, "Not enough mana. current {mana}".to_string());
+    } else {
+        return (
+            (mana - spell_mana),
+            format!("You cast {spell_name}! ({spell_power} damage)"),
+        );
+    }
 }
 
 /// Handle one line of player input. Returns (new mana, message, keep_playing).
@@ -69,5 +98,11 @@ pub fn cast(name: &str, mana: u32, level: u32) -> (u32, String) {
 ///
 /// Input may have surrounding whitespace and any capitalisation of the command.
 pub fn handle(input: &str, mana: u32, level: u32) -> (u32, String, bool) {
-    todo!()
+    if input == "list" {
+        return (mana, spell_list(), true);
+    } else if input == "rest" {
+        return (MAX_MANA, "you are rested".to_string(), true);
+    } else {
+        return (mana, "Unknown command".to_string(), true);
+    }
 }
