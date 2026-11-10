@@ -1,0 +1,17 @@
+[package]
+name = "ch06_03_unit_tests"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+
+# 🕵️ The Inquisitor's saboteurs. Each one, when switched on, plants a bug in
+# src/lib.rs. `wr` turns them on one at a time and expects YOUR tests to
+# fail every time. Don't touch these.
+[features]
+sabotage_damage = []
+sabotage_mana = []
+sabotage_crit = []
+sabotage_ranking = []
+sabotage_summon = []

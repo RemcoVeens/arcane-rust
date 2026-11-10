@@ -1,0 +1,10 @@
+# 🏰 arcana_core — the citadel's shared foundation crate.
+# It is a member of the same workspace as every quest, so it should
+# inherit the shared settings from the root Cargo.toml… but does it?
+[package]
+name = "arcana_core"
+version = "0.0.1"
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]

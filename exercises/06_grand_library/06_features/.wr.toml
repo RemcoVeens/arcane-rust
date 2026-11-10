@@ -1,0 +1,14 @@
+# The spellbook must work in every edition: without features, with
+# `enchanted`, and with `dragon_lore` (which implies `enchanted`).
+
+[[verification]]
+command = "cargo"
+args = ["test", "-q"]
+
+[[verification]]
+command = "cargo"
+args = ["test", "-q", "--features", "enchanted"]
+
+[[verification]]
+command = "cargo"
+args = ["test", "-q", "--features", "dragon_lore"]

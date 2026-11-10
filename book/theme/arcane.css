@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap");
+
+:root {
+  --arcane-violet: #9d7bff;
+  --arcane-gold: #e8c26a;
+  --arcane-ember: #ff7a59;
+  --arcane-frost: #6fd3ff;
+  --arcane-moss: #7ed99b;
+  --arcane-panel: rgba(157, 123, 255, 0.08);
+}
+.light, .rust {
+  --arcane-violet: #5b3fc4;
+  --arcane-gold: #9a6b00;
+  --arcane-ember: #c2410c;
+  --arcane-frost: #0369a1;
+  --arcane-moss: #15803d;
+  --arcane-panel: rgba(91, 63, 196, 0.07);
+}
+
+.content main { font-family: "Crimson Pro", Georgia, serif; font-size: 1.12em; line-height: 1.6; }
+.content main code, .content main pre { font-size: 0.85em; }
+
+.content h1, .content h2, .content h3, .menu-title, .chapter li.part-title {
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.02em;
+}
+.content h1 { color: var(--arcane-gold); border-bottom: 1px solid var(--arcane-violet); padding-bottom: 0.3em; }
+.content h2 { color: var(--arcane-violet); }
+
+/* 🎭 narrative hooks = blockquotes */
+.content blockquote {
+  border-left: 4px solid var(--arcane-gold);
+  background: var(--arcane-panel);
+  font-style: italic;
+  border-radius: 0 8px 8px 0;
+  padding: 0.6em 1.2em;
+}
+
+/* ⚔️ quest banner */
+.quest {
+  border: 2px solid var(--arcane-violet);
+  border-radius: 10px;
+  padding: 0.8em 1.2em;
+  margin: 1.5em 0;
+  background: linear-gradient(135deg, var(--arcane-panel), transparent);
+  font-family: "Cinzel", serif;
+}
+.quest code { font-family: var(--mono-font); font-size: 0.9em; }
+
+/* ⚠️ pitfalls */
+.pitfall {
+  border-left: 4px solid var(--arcane-ember);
+  background: rgba(255, 122, 89, 0.08);
+  border-radius: 0 8px 8px 0;
+  padding: 0.2em 1.2em;
+  margin: 1em 0;
+}
+
+/* 📜 grimoire / cheatsheet */
+.grimoire {
+  border: 1px dashed var(--arcane-moss);
+  background: rgba(126, 217, 155, 0.07);
+  border-radius: 8px;
+  padding: 0.2em 1.2em;
+  margin: 1em 0;
+}
+
+/* 🐍 / 🐹 comparisons */
+.compare {
+  border-left: 4px solid var(--arcane-frost);
+  background: rgba(111, 211, 255, 0.07);
+  border-radius: 0 8px 8px 0;
+  padding: 0.2em 1.2em;
+  margin: 1em 0;
+}
+
+/* 🔮 hints */
+details.hint {
+  border: 1px solid var(--arcane-violet);
+  border-radius: 8px;
+  padding: 0.4em 1em;
+  margin: 0.6em 0;
+}
+details.hint summary { cursor: pointer; font-family: "Cinzel", serif; color: var(--arcane-violet); }
+details.hint[open] { background: var(--arcane-panel); }

@@ -1,6 +1,12 @@
-[package]
-name = "arcane-rust"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+members = ["exercises/*/*"]
+exclude = ["legacy"]
+resolver = "3"
 
-[dependencies]
+[workspace.package]
+edition = "2024"
+version = "0.1.0"
+publish = false
+
+[workspace.dependencies]
+tokio = { version = "1", features = ["full"] }

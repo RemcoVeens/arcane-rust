@@ -1,0 +1,10 @@
+# Your original Chapter 1 spellbook (pre-workshop). Run with:
+#   cargo run --manifest-path legacy/spellbook/Cargo.toml
+[package]
+name = "arcane-rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[workspace]
