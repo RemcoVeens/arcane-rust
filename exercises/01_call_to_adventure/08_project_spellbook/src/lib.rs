@@ -34,7 +34,7 @@ pub fn banner() -> String {
 /// (Chapter 3 explains it fully — for now: `return Some(spell);` or `None`.)
 pub fn find_spell(name: &str) -> Option<Spell> {
     for spell in SPELLS {
-        if name == spell.0 {
+        if name.to_lowercase() == spell.0.to_lowercase() {
             return Some(spell);
         }
     }
@@ -49,7 +49,7 @@ pub fn spell_list() -> String {
     for (i, spell) in SPELLS.iter().enumerate() {
         let lc = i + 1;
         let (name, mana, power, level) = spell;
-        res = format!("{res}{lc}. {name} — mana {mana}, power {power}, level {level}\n")
+        res = format!("{res}{lc}. {name} — mana {mana}, power {power}, level {level}\r\n")
     }
     res
 }
@@ -98,10 +98,22 @@ pub fn cast(name: &str, mana: u32, level: u32) -> (u32, String) {
 ///
 /// Input may have surrounding whitespace and any capitalisation of the command.
 pub fn handle(input: &str, mana: u32, level: u32) -> (u32, String, bool) {
-    if input == "list" {
+    let iinput = input.trim().to_lowercase();
+    if iinput == "list" {
         return (mana, spell_list(), true);
-    } else if input == "rest" {
+    } else if iinput == "rest" {
         return (MAX_MANA, "you are rested".to_string(), true);
+    } else if iinput == "potion" {
+        return (drink_potion(mana), "you drank a potion".to_string(), true);
+    } else if iinput.contains("cast") {
+        let spell_name = iinput.trim_start_matches("cast ").trim();
+        let (return_mana, msg) = cast(spell_name, mana, level);
+        (return_mana, msg, true)
+    } else if iinput == "help" {
+        let message = "list: lists all spells\r\nrest: rest to restore health\r\npotion: drink a potion\r\ncast <spell>: cast a spell\r\nhelp: print this\r\nquit: close this shit\r\n";
+        (mana, message.to_string(), true)
+    } else if iinput == "quit" {
+        (mana, "bye bye".to_string(), false)
     } else {
         return (mana, "Unknown command".to_string(), true);
     }
