@@ -9,35 +9,42 @@ pub const MAX_MANA: u32 = 100;
 /// (Yes, `&String` — Quest 2.6 shows why `&str` is better.)
 #[allow(clippy::ptr_arg)] // deliberately `&String`, for now
 pub fn rune_count(grimoire: &String) -> usize {
-    todo!()
+    grimoire.chars().count()
 }
 
 /// Return a NEW string: the spell in uppercase, followed by "!".
 /// `shout(&String::from("Fireball"))` → "FIREBALL!"
 #[allow(clippy::ptr_arg)]
 pub fn shout(spell: &String) -> String {
-    todo!()
+    let up = spell.to_uppercase();
+    format!("{up}!")
 }
 
 /// Restore `amount` mana, never exceeding MAX_MANA.
 /// You need to dereference: `*mana`.
 pub fn recharge(mana: &mut u32, amount: u32) {
-    todo!()
+    *mana = (*mana + amount).min(MAX_MANA);
 }
 
 /// Write a rune at the end of the scroll, in place.
 pub fn add_rune(scroll: &mut String, rune: char) {
-    todo!()
+    *scroll = format!("{scroll}{rune}")
 }
 
 /// Two mages swap mana pools.
 pub fn swap_mana(a: &mut u32, b: &mut u32) {
-    todo!()
+    let c = *b;
+    *b = *a;
+    *a = c;
 }
 
 /// Sum the circle's rune costs. The array is borrowed, not copied.
 pub fn circle_cost(circle: &[u32; 5]) -> u32 {
-    todo!()
+    let mut total = 0;
+    for point in circle {
+        total += *point
+    }
+    total
 }
 
 #[cfg(test)]

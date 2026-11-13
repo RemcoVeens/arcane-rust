@@ -7,33 +7,39 @@
 /// Forge a new staff and hand it to the caller: "Staff of <element>".
 /// The `String` is created here, and returning it moves ownership out.
 pub fn forge_staff(element: &str) -> String {
-    todo!()
+    let mut staff = String::from("Staff of ");
+    staff.push_str(element);
+    staff
 }
 
 /// Take ownership of a scroll, write a rune at its end, and give it back.
 /// `inscribe(String::from("ᚠᚢ"), 'ᚦ')` → "ᚠᚢᚦ"
 /// Hint: a parameter can be declared `mut scroll: String`.
 pub fn inscribe(scroll: String, rune: char) -> String {
-    todo!()
+    let mut hello = String::from(scroll);
+    hello.push(rune);
+    hello
 }
 
 /// Weigh a scroll (its length in bytes) and give it back, so the caller
 /// still owns it: return `(scroll, weight)`.
 pub fn weigh(scroll: String) -> (String, usize) {
-    todo!()
+    let size = scroll.len();
+    (scroll, size)
 }
 
 /// Two mages merge their incantations: "<first> <second>".
 /// Both Strings are moved in; one new String comes out.
 pub fn merge(first: String, second: String) -> String {
-    todo!()
+    format!("{first} {second}")
 }
 
 /// A treasure chest. When the chest (the function) ends, everything it
 /// owns is dropped. Build the String "gold", then return only its length —
 /// the String itself is dropped when the function returns.
 pub fn count_and_drop() -> usize {
-    todo!()
+    let gold = String::from("gold");
+    gold.len()
 }
 
 #[cfg(test)]
@@ -57,7 +63,10 @@ mod tests {
         let scroll = String::from("Scroll of Mending");
         let (scroll, weight) = weigh(scroll);
         assert_eq!(weight, 17);
-        assert_eq!(scroll, "Scroll of Mending", "📜 you should get your scroll back intact");
+        assert_eq!(
+            scroll, "Scroll of Mending",
+            "📜 you should get your scroll back intact"
+        );
     }
 
     #[test]

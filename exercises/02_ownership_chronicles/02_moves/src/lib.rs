@@ -11,21 +11,22 @@
 pub fn store_in_vault() -> String {
     let staff = String::from("Staff of Embers");
     let vault = staff;
-    format!("{staff} is safe in the vault")
+    format!("{vault} is safe in the vault")
 }
 
 /// Count the runes in a scroll and give it back to the caller.
 /// The signature of `count_runes` is wrong: it swallows the scroll.
 /// Change it so it returns the scroll together with the count,
 /// as `(String, usize)`, and fix `read_after_counting` to use it.
-pub fn count_runes(scroll: String) -> usize {
-    scroll.chars().count()
+pub fn count_runes(scroll: String) -> (String, usize) {
+    let count = scroll.chars().count();
+    (scroll, count)
 }
 
 /// Expected: (16, "ᚠ Scroll of Wind") — 16 runes, scroll still readable.
 pub fn read_after_counting() -> (usize, String) {
     let scroll = String::from("ᚠ Scroll of Wind");
-    let count = count_runes(scroll);
+    let (scroll, count) = count_runes(scroll);
     (count, scroll)
 }
 
@@ -35,8 +36,8 @@ pub fn read_after_counting() -> (usize, String) {
 pub fn pack_bag() -> (Vec<String>, usize) {
     let mut bag = Vec::new();
     let potion = String::from("Potion of Swiftness");
-    bag.push(potion);
     let label_len = potion.len();
+    bag.push(potion);
     (bag, label_len)
 }
 
@@ -44,7 +45,8 @@ pub fn pack_bag() -> (Vec<String>, usize) {
 /// Expected: "Frostbolt has power 35"
 pub fn describe(spell: (String, u32)) -> String {
     let name = spell.0;
-    format!("{} has power {}", spell.0, spell.1)
+    let power = spell.1;
+    format!("{name} has power {power}")
 }
 
 /// Copy types are never moved: this one already works. Don't touch it —
@@ -68,7 +70,10 @@ mod tests {
     fn counting_gives_the_scroll_back() {
         let (scroll, count) = count_runes(String::from("ᚠᚢᚦ"));
         assert_eq!((scroll.as_str(), count), ("ᚠᚢᚦ", 3));
-        assert_eq!(read_after_counting(), (16, String::from("ᚠ Scroll of Wind")));
+        assert_eq!(
+            read_after_counting(),
+            (16, String::from("ᚠ Scroll of Wind"))
+        );
     }
 
     #[test]
@@ -80,7 +85,10 @@ mod tests {
 
     #[test]
     fn describing_a_spell_tuple() {
-        assert_eq!(describe((String::from("Frostbolt"), 35)), "Frostbolt has power 35");
+        assert_eq!(
+            describe((String::from("Frostbolt"), 35)),
+            "Frostbolt has power 35"
+        );
     }
 
     #[test]

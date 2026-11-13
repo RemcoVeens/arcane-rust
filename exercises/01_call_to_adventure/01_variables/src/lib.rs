@@ -24,7 +24,7 @@ pub fn mage_stats() -> (usize, u32) {
 /// `_` silences unused-variable warnings. Keep the warning away,
 /// but still return the number of scrolls in the bag (3).
 pub fn count_scrolls() -> u32 {
-    let unused_rune = 'ᚱ';
+    let _ = 'ᚱ';
     let scrolls = 3;
     scrolls
 }

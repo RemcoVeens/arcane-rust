@@ -8,45 +8,45 @@
 
 /// How many bytes does a `u8` take on the stack?
 pub fn bytes_u8() -> usize {
-    todo!()
+    size_of::<u8>()
 }
 
 /// ...a `u32`?
 pub fn bytes_u32() -> usize {
-    todo!()
+    size_of::<u32>()
 }
 
 /// ...a `char`? (Careful: a Rust char can hold any Unicode rune.)
 pub fn bytes_char() -> usize {
-    todo!()
+    size_of::<char>()
 }
 
 /// ...a spell circle `[u32; 5]`?
 pub fn bytes_circle() -> usize {
-    todo!()
+    size_of::<[u32; 5]>()
 }
 
 /// ...a `&str` (a pointer to some text + its length)?
 pub fn bytes_str_ref() -> usize {
-    todo!()
+    size_of::<&str>()
 }
 
 /// ...a `String` (pointer + length + capacity)?
 /// Does it matter how long the text is?
 pub fn bytes_string() -> usize {
-    todo!()
+    size_of::<String>()
 }
 
 /// ...a `Vec<u64>`? (Its elements live on the heap!)
 pub fn bytes_vec() -> usize {
-    todo!()
+    size_of::<Vec<u64>>()
 }
 
 /// Now some real code. `String::from` copies text onto the heap.
 /// Return how many *heap* bytes the incantation uses: that's its length
 /// in bytes (`.len()`), not in characters.
 pub fn heap_bytes(incantation: String) -> usize {
-    todo!()
+    incantation.len()
 }
 
 #[cfg(test)]
@@ -57,23 +57,43 @@ mod tests {
     fn small_runes() {
         assert_eq!(bytes_u8(), size_of::<u8>(), "🔮 a u8 is 8 bits");
         assert_eq!(bytes_u32(), size_of::<u32>(), "🔮 a u32 is 32 bits");
-        assert_eq!(bytes_char(), size_of::<char>(), "🔮 a char is a Unicode scalar value, not a byte");
+        assert_eq!(
+            bytes_char(),
+            size_of::<char>(),
+            "🔮 a char is a Unicode scalar value, not a byte"
+        );
     }
 
     #[test]
     fn arrays_live_entirely_on_the_stack() {
-        assert_eq!(bytes_circle(), size_of::<[u32; 5]>(), "🔮 five runes of four bytes each");
+        assert_eq!(
+            bytes_circle(),
+            size_of::<[u32; 5]>(),
+            "🔮 five runes of four bytes each"
+        );
     }
 
     #[test]
     fn a_str_ref_is_a_fat_pointer() {
-        assert_eq!(bytes_str_ref(), size_of::<&str>(), "🔮 pointer (8) + length (8)");
+        assert_eq!(
+            bytes_str_ref(),
+            size_of::<&str>(),
+            "🔮 pointer (8) + length (8)"
+        );
     }
 
     #[test]
     fn string_and_vec_are_three_words() {
-        assert_eq!(bytes_string(), size_of::<String>(), "🔮 pointer + length + capacity");
-        assert_eq!(bytes_vec(), size_of::<Vec<u64>>(), "🔮 same shape as String");
+        assert_eq!(
+            bytes_string(),
+            size_of::<String>(),
+            "🔮 pointer + length + capacity"
+        );
+        assert_eq!(
+            bytes_vec(),
+            size_of::<Vec<u64>>(),
+            "🔮 same shape as String"
+        );
     }
 
     #[test]
@@ -87,6 +107,10 @@ mod tests {
     #[test]
     fn heap_bytes_count_bytes_not_runes() {
         assert_eq!(heap_bytes(String::from("Fireball")), 8);
-        assert_eq!(heap_bytes(String::from("🔥")), 4, "🔥 is one char but four bytes of UTF-8");
+        assert_eq!(
+            heap_bytes(String::from("🔥")),
+            4,
+            "🔥 is one char but four bytes of UTF-8"
+        );
     }
 }
