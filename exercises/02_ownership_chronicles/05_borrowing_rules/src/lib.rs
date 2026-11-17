@@ -12,9 +12,9 @@
 /// Expected: (8, 19)
 pub fn grimoire_growth() -> (usize, usize) {
     let mut grimoire = String::from("Fireball");
-    let before = &grimoire;
+    let before = grimoire.len();
     grimoire.push_str(", Frostbolt");
-    (before.len(), grimoire.len())
+    (before, grimoire.len())
 }
 
 /// Two drains on the same mana pool: 30, then 25.
@@ -22,8 +22,8 @@ pub fn grimoire_growth() -> (usize, usize) {
 pub fn double_drain() -> u32 {
     let mut mana = 100;
     let first = &mut mana;
-    let second = &mut mana;
     *first -= 30;
+    let second = &mut mana;
     *second -= 25;
     mana
 }
@@ -36,26 +36,26 @@ fn spend(mana: &mut u32, cost: u32) {
 /// Expected: (100, 70) — before and after.
 pub fn glance_then_cast() -> (u32, u32) {
     let mut mana = 100;
-    let glance = &mana;
+    let glance = mana;
     spend(&mut mana, 30);
-    (*glance, mana)
+    (glance, mana)
 }
 
 /// Learn a new spell, then describe the book.
 /// Expected for a book ["Fireball"] and new spell "Meteor":
 ///   "First spell: Fireball, spells known: 2"
 pub fn learn_and_describe(book: &mut Vec<String>, new_spell: String) -> String {
-    let first = &book[0];
     book.push(new_spell);
+    let first = &book[0];
     format!("First spell: {first}, spells known: {}", book.len())
 }
 
 /// Conjure the mage's name. The name dies at the end of this function,
 /// so a reference to it would dangle! Change the return type so the
 /// caller receives the *owned* name instead.
-pub fn conjure_name() -> &String {
+pub fn conjure_name() -> String {
     let name = String::from("Tiberius");
-    &name
+    name
 }
 
 #[cfg(test)]

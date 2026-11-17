@@ -38,38 +38,65 @@ pub const TOWER_SCROLLS: [Spell; 2] = [("Arcane Blast", 40, 60, 5), ("Meteor", 9
 ///   "  cast   Arcane Blast \n" → ("cast", "Arcane Blast")
 ///   "list\n"                   → ("list", "")
 pub fn split_command(input: &str) -> (&str, &str) {
-    todo!()
+    let clean = input.trim();
+    match clean.split_once(" ") {
+        Some((cmd, args)) => (cmd, args.trim_start()),
+        None => (clean, ""),
+    }
 }
 
 /// One line per spell, numbered from 1, separated by '\n':
 ///   "1. Fireball — mana 30, power 45, level 1"
 /// An empty spellbook gives "Your spellbook is empty."
 pub fn spell_list(spellbook: &[Spell]) -> String {
-    todo!()
+    let mut output = String::from("");
+    let max_spells = spellbook.len();
+    if max_spells == 0 {
+        return String::from("Your spellbook is empty.");
+    };
+    let mut index = 1;
+    for spell in spellbook {
+        let (name, mana, power, lvl) = *spell;
+        output = format!("{output}{index}. {name} — mana {mana}, power {power}, level {lvl}");
+        if index < max_spells {
+            output = format!("{output}\n")
+        }
+        index += 1;
+    }
+    output
 }
 
 /// Find a spell in the (borrowed) spellbook by name, ignoring case.
-/// Spells are Copy tuples, so you can return a copy.
+/// Spells are Copy tuples, so you can return a copy*.
 pub fn find_spell(spellbook: &[Spell], name: &str) -> Option<Spell> {
-    todo!()
+    for spell in spellbook {
+        if *spell.0.to_lowercase() == name.to_lowercase() {
+            return Some(*spell);
+        }
+    }
+    return None;
 }
 
 // ── Phase 2: mana through `&mut` ────────────────────────────────────
 
 /// Fill the mana pool to MAX_MANA.
 pub fn rest(mana: &mut u32) {
-    todo!()
+    *mana = MAX_MANA
 }
 
 /// Restore POTION_STRENGTH mana, capped at MAX_MANA.
 pub fn drink_potion(mana: &mut u32) {
-    todo!()
+    *mana = (*mana + POTION_STRENGTH).min(MAX_MANA)
 }
 
 /// Spend `cost` mana if there is enough. Returns whether it worked;
 /// on failure the mana is left untouched.
 pub fn spend_mana(mana: &mut u32, cost: u32) -> bool {
-    todo!()
+    if *mana < cost {
+        return false;
+    };
+    *mana -= cost;
+    true
 }
 
 /// Try to cast a spell from the spellbook. Returns the message; mana is
@@ -81,7 +108,18 @@ pub fn spend_mana(mana: &mut u32, cost: u32) -> bool {
 /// - Success:         message contains the spell's proper name and its
 ///   power, e.g. "You cast Fireball! (45 damage)"
 pub fn cast(spellbook: &[Spell], name: &str, mana: &mut u32, level: u32) -> String {
-    todo!()
+    let spell = find_spell(spellbook, name);
+    let Some((s_name, s_mana, s_power, s_lvl)) = spell else {
+        return String::from("Unknown spell");
+    };
+    if s_lvl > level {
+        return String::from("requires level {spell.3}");
+    };
+    if s_mana > *mana {
+        return String::from("Not enough mana");
+    }
+    *mana -= s_mana;
+    format!("You cast {s_name}! ({s_power} damage)")
 }
 
 // ── Phase 3: scrolls & commands ─────────────────────────────────────
@@ -91,7 +129,12 @@ pub fn cast(spellbook: &[Spell], name: &str, mana: &mut u32, level: u32) -> Stri
 /// (it must contain the spell name). No scrolls left → message contains
 /// "No scrolls".
 pub fn read_scroll(scrolls: &mut Vec<Spell>, spellbook: &mut Vec<Spell>) -> String {
-    todo!()
+    scrolls.reverse();
+    let Some((s_name, s_mana, s_power, s_lvl)) = scrolls.pop() else {
+        return String::from("No scrolls left");
+    };
+    spellbook.push((s_name, s_mana, s_power, s_lvl));
+    format!("You learned {s_name}!")
 }
 
 /// Handle one line of player input. Returns (message, keep_playing).
@@ -114,7 +157,30 @@ pub fn handle(
     spellbook: &mut Vec<Spell>,
     scrolls: &mut Vec<Spell>,
 ) -> (String, bool) {
-    todo!()
+    let lowerd = &input.to_lowercase();
+    let (comm, args) = split_command(lowerd.as_str());
+    if comm == "list" {
+        (spell_list(spellbook), true)
+    } else if comm == "rest" {
+        rest(mana);
+        (String::from("You rested"), true)
+    } else if comm == "potion" {
+        drink_potion(mana);
+        let mut message = String::from("You drank a potion");
+        message = format!("{message} (current mana {mana})");
+        (message, true)
+    } else if comm == "cast" {
+        (cast(spellbook, args, mana, level), true)
+    } else if comm == "read" {
+        (read_scroll(scrolls, spellbook), true)
+    } else if comm == "help" {
+        let help = "Commands: list, cast <spell>, read, rest, potion, help, quit";
+        (String::from(help), true)
+    } else if input == "quit" {
+        (String::from("Farewell, mage."), false)
+    } else {
+        return (String::from("Unknown command"), true);
+    }
 }
 
 /// 📜 The Chapter 1 spellbook — working, but everything by value.
@@ -149,7 +215,10 @@ pub mod chapter1 {
             if i > 0 {
                 list.push('\n');
             }
-            list += &format!("{}. {name} — mana {cost}, power {power}, level {level}", i + 1);
+            list += &format!(
+                "{}. {name} — mana {cost}, power {power}, level {level}",
+                i + 1
+            );
         }
         list
     }
@@ -164,9 +233,15 @@ pub mod chapter1 {
                 return if level < required {
                     (mana, format!("{spell_name} requires level {required}."))
                 } else if mana < cost {
-                    (mana, format!("Not enough mana! {spell_name} needs {cost}, you have {mana}."))
+                    (
+                        mana,
+                        format!("Not enough mana! {spell_name} needs {cost}, you have {mana}."),
+                    )
                 } else {
-                    (mana - cost, format!("You cast {spell_name}! ({power} damage)"))
+                    (
+                        mana - cost,
+                        format!("You cast {spell_name}! ({power} damage)"),
+                    )
                 };
             }
         }
@@ -178,7 +253,11 @@ pub mod chapter1 {
         if input == "list" {
             (mana, spell_list(), true)
         } else if input == "rest" {
-            (MAX_MANA, String::from("You rest. Mana fully restored."), true)
+            (
+                MAX_MANA,
+                String::from("You rest. Mana fully restored."),
+                true,
+            )
         } else if input == "potion" {
             let mana = drink_potion(mana);
             (mana, format!("Glug glug. Mana is now {mana}."), true)
@@ -191,7 +270,11 @@ pub mod chapter1 {
         } else if input == "quit" {
             (mana, String::from("Farewell, mage."), false)
         } else {
-            (mana, format!("Unknown command: '{input}'. Type 'help'."), true)
+            (
+                mana,
+                format!("Unknown command: '{input}'. Type 'help'."),
+                true,
+            )
         }
     }
 }

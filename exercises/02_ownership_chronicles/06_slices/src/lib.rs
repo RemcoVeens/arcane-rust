@@ -10,7 +10,8 @@ pub type Spell = (&'static str, u32, u32);
 /// or the whole thing if there is no space.
 /// `first_word("Fireball Frostbolt")` → "Fireball"
 pub fn first_word(incantation: &str) -> &str {
-    todo!()
+    let last_index_of_first_word = incantation.find(" ").unwrap_or(incantation.len());
+    &incantation[..last_index_of_first_word]
 }
 
 /// Spell names are written "School::Name". Return the school.
@@ -18,35 +19,43 @@ pub fn first_word(incantation: &str) -> &str {
 /// No "::" at all? Then the school is "" (an empty slice).
 /// Hint: `.find("::")` gives `Some(index)` or `None`.
 pub fn school(full_name: &str) -> &str {
-    todo!()
+    let end = full_name.find("::").unwrap_or(0);
+    &full_name[..end]
 }
 
 /// How many *runes* (chars) vs how many *bytes*: return (chars, bytes).
 /// `rune_and_byte_count("🔥fire")` → (5, 8)
 pub fn rune_and_byte_count(text: &str) -> (usize, usize) {
-    todo!()
+    let runes = text.chars().count();
+    (runes, text.len())
 }
 
 /// The highest power in a slice of powers, or 0 for an empty slice.
 /// Works for arrays AND vectors, because both can lend out a `&[u32]`.
 pub fn strongest(powers: &[u32]) -> u32 {
-    todo!()
+    *powers.iter().max().unwrap_or(&0)
 }
 
 /// The first `n` spells of a spellbook — or all of them, if there are
 /// fewer than `n`. Return a slice of the original, don't build a new Vec.
 pub fn first_spells(spellbook: &[Spell], n: usize) -> &[Spell] {
-    todo!()
+    &spellbook[..n.min(spellbook.len())]
 }
 
 /// Total mana cost of a slice of spells.
 pub fn total_cost(spells: &[Spell]) -> u32 {
-    todo!()
+    let mut sum = 0;
+    for spell in spells.iter() {
+        sum += &spell.1
+    }
+    sum
 }
 
 /// Empower a slice of damage values in place: double each one.
 pub fn empower(damage: &mut [u32]) {
-    todo!()
+    for dam in damage.iter_mut() {
+        *dam *= 2;
+    }
 }
 
 #[cfg(test)]
@@ -66,7 +75,11 @@ mod tests {
         assert_eq!(first_word("Fireball Frostbolt Arcane Blast"), "Fireball");
         assert_eq!(first_word("Meteor"), "Meteor");
         let owned = String::from("Heal thyself");
-        assert_eq!(first_word(&owned), "Heal", "📜 a &String works as a &str too");
+        assert_eq!(
+            first_word(&owned),
+            "Heal",
+            "📜 a &String works as a &str too"
+        );
     }
 
     #[test]
