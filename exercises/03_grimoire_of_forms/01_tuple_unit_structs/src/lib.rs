@@ -18,38 +18,48 @@ pub struct Health(pub u32);
 //   - `pub struct Gold`: a newtype around a u32 (public field)
 //   - `pub struct Position`: a tuple struct of two i32 (x, y), both public
 //   - `pub struct Ward`: a unit struct (no fields at all)
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Gold(pub u32);
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Position(pub i32, pub i32);
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Ward;
 
 /// Spend mana on a spell. Never below zero.
 pub fn drain(mana: Mana, cost: u32) -> Mana {
-    todo!()
+    Mana(mana.0.saturating_sub(cost))
 }
 
 /// Heal, capped at MAX_HEALTH.
 pub fn heal(health: Health, amount: u32) -> Health {
-    todo!()
+    Health(health.0.saturating_add(amount).min(MAX_HEALTH))
 }
 
 /// Split the loot evenly between `mages` mages (integer division).
 /// Assume mages > 0.
 pub fn share(loot: Gold, mages: u32) -> Gold {
-    todo!()
+    Gold(loot.0.saturating_div(mages))
 }
 
 /// One step north increases y by 1.
 pub fn step_north(pos: Position) -> Position {
-    todo!()
+    Position(pos.0, pos.1.saturating_add(1))
 }
 
 /// Manhattan distance: |x1 - x2| + |y1 - y2|.
 /// Try destructuring: `let Position(x1, y1) = a;`
 /// Hint: `i32::abs_diff` returns a u32.
 pub fn distance(a: Position, b: Position) -> u32 {
-    todo!()
+    let Position(x1, y1) = a;
+    let Position(x2, y2) = b;
+    x1.abs_diff(x2) + y1.abs_diff(y2)
 }
 
 /// Raise a ward. A unit struct is created just by writing its name.
 pub fn raise_ward() -> Ward {
-    todo!()
+    Ward
 }
 
 #[cfg(test)]
@@ -88,6 +98,10 @@ mod tests {
     fn wards_take_no_space() {
         assert_eq!(raise_ward(), Ward);
         assert_eq!(size_of::<Ward>(), 0, "a unit struct is zero-sized");
-        assert_eq!(size_of::<Mana>(), size_of::<u32>(), "a newtype costs nothing extra");
+        assert_eq!(
+            size_of::<Mana>(),
+            size_of::<u32>(),
+            "a newtype costs nothing extra"
+        );
     }
 }

@@ -26,40 +26,71 @@ pub struct Spell {
 //   - `name`, a String
 //   - `strength`, a u32
 // and derive Debug, Clone and PartialEq, like the structs above.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Potion {
+    pub name: String,
+    pub strength: u32,
+}
 
 /// A fresh apprentice: level 1, 100 mana out of 100.
 /// Try the field init shorthand: `Mage { name, ... }`.
 pub fn apprentice(name: &str) -> Mage {
-    todo!()
+    Mage {
+        name: String::from(name),
+        level: 1,
+        mana: 100,
+        max_mana: 100,
+    }
 }
 
 /// Promotion: one level up, max_mana grows by 10 and the mana is refilled
 /// to the new max. The name stays the same.
 /// Try struct update syntax: `Mage { level: ..., ..mage }`.
 pub fn promote(mage: Mage) -> Mage {
-    todo!()
+    let new_max = mage.max_mana + 10;
+    Mage {
+        level: mage.level + 1,
+        max_mana: new_max,
+        mana: new_max,
+        ..mage
+    }
 }
 
 /// Brew a potion.
 pub fn brew(name: &str, strength: u32) -> Potion {
-    todo!()
+    Potion {
+        name: name.to_string(),
+        strength,
+    }
 }
 
 /// Drink a potion: the mage's mana goes up by its strength, but never
 /// above their own max_mana. The potion is only borrowed.
 pub fn drink(mage: &mut Mage, potion: &Potion) {
-    todo!()
+    mage.mana = (mage.mana + potion.strength).min(mage.max_mana)
 }
 
 /// "Tiberius (level 7) — mana 40/100"
 pub fn describe(mage: &Mage) -> String {
-    todo!()
+    format!(
+        "{} (level {}) — mana {}/{}",
+        mage.name, mage.level, mage.mana, mage.max_mana
+    )
 }
 
 /// Power per mana point. Try destructuring: `let Spell { cost, power, .. } = spell;`
 /// A spell that costs 0 mana has an efficiency of 0.0.
 pub fn efficiency(spell: &Spell) -> f64 {
-    todo!()
+    let Spell {
+        name: _,
+        cost,
+        power,
+    } = spell;
+    if *cost == 0 {
+        return 0.0 as f64;
+    } else {
+        *power as f64 / *cost as f64
+    }
 }
 
 #[cfg(test)]
@@ -67,13 +98,26 @@ mod tests {
     use super::*;
 
     fn tiberius() -> Mage {
-        Mage { name: String::from("Tiberius"), level: 7, mana: 40, max_mana: 100 }
+        Mage {
+            name: String::from("Tiberius"),
+            level: 7,
+            mana: 40,
+            max_mana: 100,
+        }
     }
 
     #[test]
     fn a_new_apprentice() {
         let mage = apprentice("Morgana");
-        assert_eq!(mage, Mage { name: String::from("Morgana"), level: 1, mana: 100, max_mana: 100 });
+        assert_eq!(
+            mage,
+            Mage {
+                name: String::from("Morgana"),
+                level: 1,
+                mana: 100,
+                max_mana: 100
+            }
+        );
     }
 
     #[test]
@@ -110,9 +154,17 @@ mod tests {
 
     #[test]
     fn spell_efficiency() {
-        let fireball = Spell { name: String::from("Fireball"), cost: 30, power: 45 };
+        let fireball = Spell {
+            name: String::from("Fireball"),
+            cost: 30,
+            power: 45,
+        };
         assert_eq!(efficiency(&fireball), 1.5);
-        let wink = Spell { name: String::from("Wink"), cost: 0, power: 1 };
+        let wink = Spell {
+            name: String::from("Wink"),
+            cost: 0,
+            power: 1,
+        };
         assert_eq!(efficiency(&wink), 0.0);
     }
 }
